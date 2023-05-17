@@ -18,22 +18,42 @@ body {
     overflow: hidden;
 }
 
-nav {
-    padding: 1rem;
-    border-bottom: 1px solid #000;
-    display: flex;
-}
 
-.nav-links {
-    flex-grow: 1;
-    justify-content: end;
-    display: flex;
-}
-
-.nav-link {
+/*pop up description table*/
+.mapboxgl-popup-content {
+    position: relative;
     display: inline-block;
-    font-size: .9rem;
+    cursor: pointer;
+    width: 300px;
 }
+
+
+
+dt {
+    float: left;
+    width: 50%;
+    /* adjust the width; make sure the total of both is 100% */
+    padding-bottom: 1px;
+    margin-top: 10;
+    font-weight: 550;
+    font-size: 12px;
+    font-family: Helvetica;
+    color: #08519c
+}
+
+dd {
+    float: left;
+    width: 25%;
+    /* adjust the width; make sure the total of both is 100% */
+    ;
+    padding-bottom: 1px;
+    margin: 0;
+    font-size: 12px;
+    font-family: Helvetica;
+    font-weight: 200;
+    color:#08519c;
+}
+
 
 #content-container {
     flex-grow: 1;
@@ -42,8 +62,8 @@ nav {
 }
 
 #sidebar {
-    width: 348px;
-    padding: 1rem;
+    width: 450px;
+    padding: 0.5rem;
     font-size: 0.9rem;
     overflow-y: scroll;
     box-sizing: border-box;

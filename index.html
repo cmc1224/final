@@ -3,81 +3,43 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Restaurant Inspections and Complaints in Manhattan Community District 4</title>
+    <title>Agricultural Economy by State</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
+    <!-- Load c3.css -->
+    <link href="css/c3.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
+
 
 </head>
 
 <body>
-
-    <div class="sidebar">
-        <div class="title">
-            Agricultural Economy by State
-        </div>
-        <div class="description">
-            <div>
-                
+    <div id="main-container">
+        <div id="content-container">
+            <div id="sidebar">
+                <p>The United stated produced $171.7 billion in agricultural exports in 2021. </p>
+                <p>According to the USDA, "Agriculture, food, and related industries contributed roughly $1.264 trillion to U.S. 
+                    gross domestic product (GDP) in 2021, a 5.4-percent share. The output of America's farms contributed 
+                    $164.7 billion of this sum—about 0.7 percent of U.S. GDP. The overall contribution of agriculture to 
+                    GDP is larger than 0.7 percent because sectors related to agriculture rely on agricultural inputs in 
+                    order to contribute added value to the economy. Sectors related to agriculture include: food and beverage 
+                    manufacturing; food and beverage stores; food services and eating/drinking places; textiles, apparel, and 
+                    leather products; and forestry and fishing."</p>
+                <p>Which states play the largest role in agricultural economy?</p>
+                <p>Click a state to see the breakdown of its exports' values and learn about its locla agricultural economy.  </p>
             </div>
-            <br>
-            <div>
-  
-            </div>
-            <br>
-            <div>
-                
-                <br>
-            
-            </div>
-
-
+            <div id="map"></div>
+            <div id="chart"></div>
         </div>
-
-    </div>
-
-
-
-    <div id="map"></div>
-
-    <div class="map-overlay" id="legend">
-        <div>
-            <span class="title"> Legend </span>
-            <br>
-        </div>
-        <div>
-            <span class="legend-key" style="background-color:#c97fe4"></span>
-            <span>311 Calls</span>
-        </div>
-        <div>
-            <span class="legend-key" style="background-color:rgb(28,144,153)"></span>
-            <span> Concentration of Restaurant Violations </span>
-        </div>
-        <div>
-            <span class="legend-key" style="background-color:#7bba81"></span>
-            <span>Grade: A</span>
-        </div>
-        <div>
-            <span class="legend-key" style="background-color:#e3cc68"></span>
-            <span>Grade: B </span>
-        </div>
-        <div>
-            <span class="legend-key" style="background-color:#e85d2e"></span>
-            <span> Grade: C </span>
-        </div>
-        <div>
-            <span class="legend-key" style="background-color:#91756c"></span>
-            <span> Grade: Pending </span>
-        </div>
-
-
-    </div>
+    </div>  
 
 
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-        <script src="data/cropvalues_state.js"></script>
+    <script src="data/cropvalues_state.js"></script>
+    <!-- Load d3.js and c3.js -->
+    <script src="data/agricultural_employment.js"></script> 
     <script src="js/scripts.js"></script>
 </body>
 
