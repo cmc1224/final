@@ -24,152 +24,136 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
         return newFeature
     })
 
-    $.getJSON('data/agricultural_employment.geojson', function (data) {
-        const cleanFeatures2 = data.features.map(function (feature) {
-            const newFeature2 = feature
-            newFeature2.properties['agricultural_employment_NAICS 11 share of total employment (as decimal)'] = parseFloat(feature.properties['agricultural_employment_NAICS 11 share of total employment (as decimal)'] * 100)
+    map.on('load', function () {
+
+        //agricultural export values (in millions) by state 
+        map.addSource('cropvalues_state', {
+            type: 'geojson',
+            data: {
+                type: 'FeatureCollection',
+                features: cleanFeatures
+            },
+            generateId: true
         })
-        console.log(cleanFeatures2)
 
-        map.on('load', function () {
+        //share of NAICS Code 11 (Agriculture & related, industry) of state workforce in decimal form
+        map.addSource('agricultural_employment_state', {
+            type: 'geojson',
+            data: agricultural_employment
+        })
 
-            //agricultural export values (in millions) by state 
-            map.addSource('cropvalues_state', {
-                type: 'geojson',
-                data: {
-                    type: 'FeatureCollection',
-                    features: cleanFeatures
-                },
-                generateId: true
-            })
+        //state fill
+        map.addLayer({
+            id: 'fill-cropvalues-totalexports',
+            type: 'fill',
+            source: 'cropvalues_state',
+            paint: {
+                'fill-color': [
+                    'interpolate',
+                    ['linear'],
+                    ['get', 'cropvalues_state_Total agricultural exports'],
+                    100,
+                    '#eff3ff',
+                    500,
+                    '#c6dbef',
+                    1000,
+                    '#9ecae1',
+                    2500,
+                    '#6baed6',
+                    5000,
+                    '#3182bd',
+                    10000,
+                    '#08519c',
 
-            //share of NAICS Code 11 (Agriculture & related, industry) of state workforce in decimal form
-            map.addSource('agricultural_employment_state', {
-                type: 'geojson',
-                data: {
-                    type: 'FeatureCollection',
-                    features: cleanFeatures2,
-                    geometry: {
-                        type: 'point',
-                        coordinates: ['centlon', 'centlat']
-                    }
-                },
-                generateId: true
-            })
+                ]
+            }
+        })
 
-            //state fill
-            map.addLayer({
-                id: 'fill-cropvalues-totalexports',
-                type: 'fill',
-                source: 'cropvalues_state',
-                paint: {
-                    'fill-color': [
-                        'interpolate',
-                        ['linear'],
-                        ['get', 'cropvalues_state_Total agricultural exports'],
-                        100,
-                        '#eff3ff',
-                        500,
-                        '#c6dbef',
-                        1000,
-                        '#9ecae1',
-                        2500,
-                        '#6baed6',
-                        5000,
-                        '#3182bd',
-                        10000,
-                        '#08519c',
+        map.addLayer({
+            'id': 'line-state-highlight',
+            'type': 'fill',
+            'source': 'cropvalues_state',
+            'layout': {},
+            'paint': {
+                'fill-outline-color': '#1F51FF',
+                'fill-opacity': [
+                    'case',
+                    ['boolean', ['feature-state', 'hover'], false],
+                    1,
+                    0
+                ],
+            }
+        });
 
-                    ]
-                }
-            })
+        // states border
+        map.addLayer({
+            id: 'outline-states',
+            type: 'line',
+            source: 'cropvalues_state',
+            paint: {
+                'line-color': '#000',
+                'line-width': 0.5
+            }
+        })
+        //point sized relative to share of NAICS Code 11 (Agriculture & related, industry) of state workforce in decimal form 
+        map.addLayer({
+            id: 'ag_employment_share_state',
+            type: 'circle',
+            source: 'agricultural_employment_state',
+            paint: {
+                'circle-radius': [
+                    'interpolate',
+                    ['linear'],
+                    ['get', 'agricultural_employment_NAICS 11 share of total employment (as decimal)'],
+                    0,
+                    0,
+                    0.002,
+                    2,
+                    0.004,
+                    4,
+                    0.006,
+                    6,
+                    0.008,
+                    8,
+                    .01,
+                    10,
+                ]
 
-            map.addLayer({
-                'id': 'line-state-highlight',
-                'type': 'fill',
-                'source': 'cropvalues_state',
-                'layout': {},
-                'paint': {
-                    'fill-outline-color': '#1F51FF',
-                    'fill-opacity': [
-                        'case',
-                        ['boolean', ['feature-state', 'hover'], false],
-                        1,
-                        0
-                    ],
-                }
-            });
+            }
 
-            // states border
-            map.addLayer({
-                id: 'outline-states',
-                type: 'line',
-                source: 'cropvalues_state',
-                paint: {
-                    'line-color': '#000',
-                    'line-width': 0.5
-                }
-            })
+        })
+        map.on('click', 'fill-cropvalues-totalexports', (e) => {
+            // Copy coordinates array.
+            const state_name = e.features[0].properties['name']
+            const total_exports_value_millions = parseFloat(e.features[0].properties['cropvalues_state_Total agricultural exports'] * 1000000)
+            const total_exports_value = (e.features[0].properties['cropvalues_state_Total agricultural exports'])
+            const largest_export = (e.features[0].properties['cropvalues_state_Largest Export'])
+            const beef_and_veal = parseFloat(e.features[0].properties['cropvalues_state_Beef and veal'])
+            const broiler_meat = parseFloat(e.features[0].properties['cropvalues_state_Broiler meat'])
+            const corn = parseFloat(e.features[0].properties['cropvalues_state_Corn'])
+            const cotton = parseFloat(e.features[0].properties['cropvalues_state_Cotton'])
+            const dairy = parseFloat(e.features[0].properties['cropvalues_state_Dairy products'])
+            const Feeds_and_other_feed_grains = parseFloat(e.features[0].properties['cropvalues_state_Feeds and other feed grains'])
+            const Fruits_fresh = parseFloat(e.features[0].properties['cropvalues_state_Fruits, fresh'])
+            const Fruits_processed = parseFloat(e.features[0].properties['cropvalues_state_Fruits, processed'])
+            const Grain_products = parseFloat(e.features[0].properties['cropvalues_state_Grain products'])
+            const Hides_and_skins = parseFloat(e.features[0].properties['cropvalues_state_Hides and skins'])
+            const Other_livestock_products = parseFloat(e.features[0].properties['cropvalues_state_Other livestock products'])
+            const Other_oilseeds_and_products = parseFloat(e.features[0].properties['cropvalues_state_Other oilseeds and products'])
+            const Other_plant_products = parseFloat(e.features[0].properties['cropvalues_state_Other plant products'])
+            const Other_poultry_products = parseFloat(e.features[0].properties['cropvalues_state_Other poultry products'])
+            const Pork = parseFloat(e.features[0].properties['cropvalues_state_Pork'])
+            const Rice = parseFloat(e.features[0].properties['cropvalues_state_Rice'])
+            const Soybean_meal = parseFloat(e.features[0].properties['cropvalues_state_Soybean meal'])
+            const Soybeans = parseFloat(e.features[0].properties['cropvalues_state_Soybeans'])
+            const Tobacco = parseFloat(e.features[0].properties['cropvalues_state_Tobacco'])
+            const Tree_nuts = parseFloat(e.features[0].properties['cropvalues_state_Tree nuts'])
+            const Vegetable_oils = parseFloat(e.features[0].properties['cropvalues_state_Vegetable oils'])
+            const Vegetables_fresh = parseFloat(e.features[0].properties['cropvalues_state_Vegetables, fresh'])
+            const Vegetables_processed = parseFloat(e.features[0].properties['cropvalues_state_Vegetables, processed'])
+            const Wheat = parseFloat(e.features[0].properties['cropvalues_state_Wheat'])
 
-            //point sized relative to share of NAICS Code 11 (Agriculture & related, industry) of state workforce in decimal form 
-            map.addLayer({
-                id: 'ag_employment_share_state',
-                type: 'circle',
-                source: 'agricultural_employment_state',
-                paint: {
-                    'circle-radius': [
-                        'interpolate',
-                        ['linear'],
-                        ['get', '"agricultural_employment_NAICS 11 share of total employment (as decimal)'],
-                        0,
-                        0,
-                        0.2,
-                        2,
-                        0.4,
-                        4,
-                        0.6,
-                        6,
-                        0.8,
-                        8,
-                        1,
-                        10,
-                    ]
-
-                }
-
-            })
-            map.on('click', 'fill-cropvalues-totalexports', (e) => {
-                // Copy coordinates array.
-                const state_name = e.features[0].properties['name']
-                const total_exports_value_millions = parseFloat(e.features[0].properties['cropvalues_state_Total agricultural exports'] * 1000000)
-                const total_exports_value = (e.features[0].properties['cropvalues_state_Total agricultural exports'])
-                const largest_export = (e.features[0].properties['cropvalues_state_Largest Export'])
-                const beef_and_veal = parseFloat(e.features[0].properties['cropvalues_state_Beef and veal'])
-                const broiler_meat = parseFloat(e.features[0].properties['cropvalues_state_Broiler meat'])
-                const corn = parseFloat(e.features[0].properties['cropvalues_state_Corn'])
-                const cotton = parseFloat(e.features[0].properties['cropvalues_state_Cotton'])
-                const dairy = parseFloat(e.features[0].properties['cropvalues_state_Dairy products'])
-                const Feeds_and_other_feed_grains = parseFloat(e.features[0].properties['cropvalues_state_Feeds and other feed grains'])
-                const Fruits_fresh = parseFloat(e.features[0].properties['cropvalues_state_Fruits, fresh'])
-                const Fruits_processed = parseFloat(e.features[0].properties['cropvalues_state_Fruits, processed'])
-                const Grain_products = parseFloat(e.features[0].properties['cropvalues_state_Grain products'])
-                const Hides_and_skins = parseFloat(e.features[0].properties['cropvalues_state_Hides and skins'])
-                const Other_livestock_products = parseFloat(e.features[0].properties['cropvalues_state_Other livestock products'])
-                const Other_oilseeds_and_products = parseFloat(e.features[0].properties['cropvalues_state_Other oilseeds and products'])
-                const Other_plant_products = parseFloat(e.features[0].properties['cropvalues_state_Other plant products'])
-                const Other_poultry_products = parseFloat(e.features[0].properties['cropvalues_state_Other poultry products'])
-                const Pork = parseFloat(e.features[0].properties['cropvalues_state_Pork'])
-                const Rice = parseFloat(e.features[0].properties['cropvalues_state_Rice'])
-                const Soybean_meal = parseFloat(e.features[0].properties['cropvalues_state_Soybean meal'])
-                const Soybeans = parseFloat(e.features[0].properties['cropvalues_state_Soybeans'])
-                const Tobacco = parseFloat(e.features[0].properties['cropvalues_state_Tobacco'])
-                const Tree_nuts = parseFloat(e.features[0].properties['cropvalues_state_Tree nuts'])
-                const Vegetable_oils = parseFloat(e.features[0].properties['cropvalues_state_Vegetable oils'])
-                const Vegetables_fresh = parseFloat(e.features[0].properties['cropvalues_state_Vegetables, fresh'])
-                const Vegetables_processed = parseFloat(e.features[0].properties['cropvalues_state_Vegetables, processed'])
-                const Wheat = parseFloat(e.features[0].properties['cropvalues_state_Wheat'])
-
-                $('#sidebar').html(`
+            $('#sidebar').html(`
             <div>
                 <h2>
                     ${state_name} 
@@ -254,49 +238,48 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
             </div>
             `)
 
-                new mapboxgl.Popup()
-                    .setLngLat([e.features[0].properties.centlon, e.features[0].properties.centlat])
-                    .setHTML(
-                        `${state_name} exported $ ${(total_exports_value_millions).toLocaleString('en-US')} worth in agricultural products in 2021. Their largest export is ${largest_export}`)
-                    .addTo(map);
-            });
+            new mapboxgl.Popup()
+                .setLngLat([e.features[0].properties.centlon, e.features[0].properties.centlat])
+                .setHTML(
+                    `${state_name} exported $ ${(total_exports_value_millions).toLocaleString('en-US')} worth in agricultural products in 2021. Their largest export is ${largest_export}`)
+                .addTo(map);
         });
-        //highlight on hover
-        map.on('mousemove', 'line-state-highlight', (e) => {
-            if (e.features.length > 0) {
-                if (hoveredStateId !== null) {
-                    map.setFeatureState(
-                        { source: 'cropvalues_state', id: hoveredStateId },
-                        { hover: false }
-                    );
-                }
-                hoveredStateId = e.features[0].id;
-                map.setFeatureState(
-                    { source: 'cropvalues_state', id: hoveredStateId },
-                    { hover: true }
-                );
-            }
-        });
-
-        // When the mouse leaves the state-fill layer, update the feature state of the
-        // previously hovered feature.
-        map.on('mouseleave', 'line-state-highlight', () => {
+    });
+    //highlight on hover
+    map.on('mousemove', 'line-state-highlight', (e) => {
+        if (e.features.length > 0) {
             if (hoveredStateId !== null) {
                 map.setFeatureState(
                     { source: 'cropvalues_state', id: hoveredStateId },
                     { hover: false }
                 );
             }
-            hoveredStateId = null;
-        });
-        map.on('mouseenter', 'fill-cropvalues-totalexports', () => {
-            map.getCanvas().style.cursor = 'pointer';
-        });
-
-        // Change it back to a pointer when it leaves.
-        map.on('mouseleave', 'fill-cropvalues-totalexports', () => {
-            map.getCanvas().style.cursor = '';
-        });
-
+            hoveredStateId = e.features[0].id;
+            map.setFeatureState(
+                { source: 'cropvalues_state', id: hoveredStateId },
+                { hover: true }
+            );
+        }
     });
+
+    // When the mouse leaves the state-fill layer, update the feature state of the
+    // previously hovered feature.
+    map.on('mouseleave', 'line-state-highlight', () => {
+        if (hoveredStateId !== null) {
+            map.setFeatureState(
+                { source: 'cropvalues_state', id: hoveredStateId },
+                { hover: false }
+            );
+        }
+        hoveredStateId = null;
+    });
+    map.on('mouseenter', 'fill-cropvalues-totalexports', () => {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'fill-cropvalues-totalexports', () => {
+        map.getCanvas().style.cursor = '';
+    });
+
 });
