@@ -155,7 +155,7 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
             const Vegetables_fresh = parseFloat(e.features[0].properties['cropvalues_state_Vegetables, fresh'])
             const Vegetables_processed = parseFloat(e.features[0].properties['cropvalues_state_Vegetables, processed'])
             const Wheat = parseFloat(e.features[0].properties['cropvalues_state_Wheat'])
-            
+        
 
             $('#sidebar').html(`
             <div>
@@ -249,7 +249,7 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
                     `<h3>${state_name} </h3>
                     <p>Total exports value: $ ${(total_exports_value_millions).toLocaleString('en-US')} </p>
                      <p>Most valuable export: ${largest_export}</p>
-                     Argicultral industry's share of employment: ${}`
+                     Argicultral industry's share of employment: `
                      )
                 .addTo(map);
         });
