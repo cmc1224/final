@@ -53,17 +53,17 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
                     ['linear'],
                     ['get', 'cropvalues_state_Total agricultural exports'],
                     100,
-                    '#eff3ff',
+                    '#DAD7CD',
                     500,
-                    '#c6dbef',
+                    '#A3B18A',
                     1000,
-                    '#9ecae1',
+                    '#7E9971',
                     2500,
-                    '#6baed6',
+                    '#588157',
                     5000,
-                    '#3182bd',
+                    '#3A5A40',
                     10000,
-                    '#08519c',
+                    '#344E41',
 
                 ]
             }
@@ -102,12 +102,15 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
             source: 'agricultural_employment_state',
             paint: {
                 'circle-opacity': 0.6,
+                'circle-color': '#C6C3BA',
+                'circle-stroke-color': '#3A5A40',
+                'circle-stroke-width' : 1,
                 'circle-radius': [
                     'interpolate',
                     ['linear'],
                     ['get', 'NAICS 11 share of total employment (as decimal)'],
                     0,
-                    0,
+                    1,
                     0.002,
                     10,
                     0.004,
@@ -124,7 +127,6 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
 
         })
         map.on('click', 'fill-cropvalues-totalexports', (e) => {
-            // Copy coordinates array.
             const state_name = e.features[0].properties['name']
             const total_exports_value_millions = parseFloat(e.features[0].properties['cropvalues_state_Total agricultural exports'] * 1000000)
             const total_exports_value = (e.features[0].properties['cropvalues_state_Total agricultural exports'])
@@ -153,13 +155,15 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
             const Vegetables_fresh = parseFloat(e.features[0].properties['cropvalues_state_Vegetables, fresh'])
             const Vegetables_processed = parseFloat(e.features[0].properties['cropvalues_state_Vegetables, processed'])
             const Wheat = parseFloat(e.features[0].properties['cropvalues_state_Wheat'])
+            
 
             $('#sidebar').html(`
             <div>
                 <h2>
                     ${state_name} 
                 </h2>
-                <p>${state_name} exported $ ${(total_exports_value_millions).toLocaleString('en-US')} worth in agricultural products in 2021. Their largest export is ${largest_export}</p>
+                <p>${state_name} exported $ ${(total_exports_value_millions).toLocaleString('en-US')} 
+                worth in agricultural products in 2021. Their largest export is ${largest_export}. </p>
                 <h3>Value of State Exports</h3>
                 <dt> <h4>Product</h4>
                 <dd> <h4>Export Value (in millions)</h4>
@@ -242,7 +246,11 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
             new mapboxgl.Popup()
                 .setLngLat([e.features[0].properties.centlon, e.features[0].properties.centlat])
                 .setHTML(
-                    `${state_name} exported $ ${(total_exports_value_millions).toLocaleString('en-US')} worth in agricultural products in 2021. Their largest export is ${largest_export}`)
+                    `<h3>${state_name} </h3>
+                    <p>Total exports value: $ ${(total_exports_value_millions).toLocaleString('en-US')} </p>
+                     <p>Most valuable export: ${largest_export}</p>
+                     Argicultral industry's share of employment: ${}`
+                     )
                 .addTo(map);
         });
     });
