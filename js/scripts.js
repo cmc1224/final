@@ -101,6 +101,7 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
             type: 'circle',
             source: 'agricultural_employment_state',
             paint: {
+                'circle-opacity': 0.6,
                 'circle-radius': [
                     'interpolate',
                     ['linear'],
@@ -108,15 +109,15 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
                     0,
                     0,
                     0.002,
-                    2,
-                    0.004,
-                    4,
-                    0.006,
-                    6,
-                    0.008,
-                    8,
-                    .01,
                     10,
+                    0.004,
+                    20,
+                    0.006,
+                    30,
+                    0.008,
+                    40,
+                    .01,
+                    50,
                 ]
 
             }
