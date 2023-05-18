@@ -104,7 +104,7 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
                 'circle-radius': [
                     'interpolate',
                     ['linear'],
-                    ['get', 'agricultural_employment_NAICS 11 share of total employment (as decimal)'],
+                    ['get', 'NAICS 11 share of total employment (as decimal)'],
                     0,
                     0,
                     0.002,
