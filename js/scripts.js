@@ -5,13 +5,13 @@ const map = new mapboxgl.Map({
     container: 'map', // container ID
     // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
     style: 'mapbox://styles/cmc1224/clhp8sej9002601p8379dhiy8', // style URL
-    center: [-101.43084079316468, 39.12071916433891], // starting position [lng, lat]
+    center: [ -94.19968288822557, 34.89277754376434], // starting position [lng, lat]
     zoom: 3, // starting zoom
-    pitch: 0
+    pitch: 0,
+    dragPan: false,
 });
 
-
-map.addControl(new mapboxgl.NavigationControl());
+map.scrollZoom.disable();
 
 let hoveredStateId = null;
 
@@ -64,7 +64,6 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
                     '#3A5A40',
                     10000,
                     '#344E41',
-
                 ]
             }
         })
@@ -75,7 +74,7 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
             'source': 'cropvalues_state',
             'layout': {},
             'paint': {
-                'fill-outline-color': '#1F51FF',
+                'fill-color': '#283E34',
                 'fill-opacity': [
                     'case',
                     ['boolean', ['feature-state', 'hover'], false],
@@ -104,7 +103,7 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
                 'circle-opacity': 0.6,
                 'circle-color': '#C6C3BA',
                 'circle-stroke-color': '#3A5A40',
-                'circle-stroke-width' : 1,
+                'circle-stroke-width': 1,
                 'circle-radius': [
                     'interpolate',
                     ['linear'],
@@ -155,14 +154,14 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
             const Vegetables_fresh = parseFloat(e.features[0].properties['cropvalues_state_Vegetables, fresh'])
             const Vegetables_processed = parseFloat(e.features[0].properties['cropvalues_state_Vegetables, processed'])
             const Wheat = parseFloat(e.features[0].properties['cropvalues_state_Wheat'])
-        
+
 
             $('#sidebar').html(`
             <div>
                 <h2>
                     ${state_name} 
                 </h2>
-                <p>${state_name} exported $ ${(total_exports_value_millions).toLocaleString('en-US')} 
+                <p>${state_name} exported $${(total_exports_value_millions).toLocaleString('en-US')} 
                 worth in agricultural products in 2021. Their largest export is ${largest_export}. </p>
                 <h3>Value of State Exports</h3>
                 <dt> <h4>Product</h4>
@@ -247,10 +246,10 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
                 .setLngLat([e.features[0].properties.centlon, e.features[0].properties.centlat])
                 .setHTML(
                     `<h3>${state_name} </h3>
-                    <p>Total exports value: $ ${(total_exports_value_millions).toLocaleString('en-US')} </p>
-                     <p>Most valuable export: ${largest_export}</p>
-                     Argicultral industry's share of employment: `
-                     )
+                    <p><b>Total exports value: </b> $ ${numeral(total_exports_value_millions).format('0.00a')} </p>
+                     <p><b>Most valuable export:</b> ${largest_export}</p>
+                     <p><b>Agricultral industry's share of employment:</b> </p> `
+                )
                 .addTo(map);
         });
     });
@@ -291,4 +290,27 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
         map.getCanvas().style.cursor = '';
     });
 
-});
+    var limits = chroma.limits(cleanFeatures, 'q', 4);
+
+    //chroma color scale
+    var colorScale = chroma.scale(['#DAD7CD', '#344E41']).mode('lch').colors(5);
+    console.log(limits);
+
+    console.log(colorScale);
+
+    var div = document.createElement('DIV');
+    div.className = 'map-overlay';
+    /* Add min & max*/
+    var labels = []
+    div.innerHTML = '<div><h3>Value of Exports</h3><br> \
+      </div><div class="labels"><div class="min">$0</div> \
+      <div class="max">$10 Billion</div></div>'
+
+    for (i = 0; i < colorScale.length; i++) {
+        labels.push('<li style="background-color: ' + colorScale[i] + '"></li>')
+    }
+
+    div.innerHTML += '<ul style="list-style-type:none;display:flex">' + labels.join('') + '</ul>'
+    document.getElementById('map').appendChild(div);
+}
+);

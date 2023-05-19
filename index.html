@@ -3,11 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Agricultural Economy by State</title>
+    <title>2021 Agricultural Economy by State</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
     <!-- Load c3.css -->
-    <link href="css/c3.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
 
 
@@ -18,28 +17,43 @@
         <div id="content-container">
             <div id="sidebar">
                 <p>The United stated produced $171.7 billion in agricultural exports in 2021. </p>
-                <p>According to the USDA, "Agriculture, food, and related industries contributed roughly $1.264 trillion to U.S. 
-                    gross domestic product (GDP) in 2021, a 5.4-percent share. The output of America's farms contributed 
-                    $164.7 billion of this sum—about 0.7 percent of U.S. GDP. The overall contribution of agriculture to 
-                    GDP is larger than 0.7 percent because sectors related to agriculture rely on agricultural inputs in 
-                    order to contribute added value to the economy. Sectors related to agriculture include: food and beverage 
-                    manufacturing; food and beverage stores; food services and eating/drinking places; textiles, apparel, and 
-                    leather products; and forestry and fishing."</p>
+                <p>According to the USDA, "Agriculture, food, and related industries contributed roughly $1.264 trillion
+                    to U.S. gross domestic product (GDP) in 2021, a 5.4-percent share. The output of America's farms
+                    contributed $164.7 billion of this sum—about 0.7 percent of U.S. GDP. The overall contribution of
+                    agriculture to GDP is larger than 0.7 percent because sectors related to agriculture rely on
+                    agricultural inputs in order to contribute added value to the economy. Sectors related to
+                    agriculture include:
+                    food and beverage manufacturing; food and beverage stores; food services and eating/drinking places;
+                    textiles, apparel, and leather products; and forestry and fishing.</p>
+                <p> The USDA Economic Research Service explains that "California has remained the top export earnings
+                    State since 2000, with Iowa, Illinois, Minnesota,
+                    Nebraska,and Texas near the top of the list in any given year. The largest exporters of animal
+                    products in recent years have been Iowa, the largest pork producer, as well California, the largest
+                    dairy
+                    supplier, and Nebraska, one of the top beef exporters. The top three exporters of plant products
+                    have consistently
+                    been California, Illinois, and Iowa. California is the top exporter of a range of vegetable, fruits,
+                    and nuts, whereas Illinois and Iowa are top exporters of soybeans, corn, and feeds. State exports
+                    are
+                    calculated using ERS's cash-receipts methodology. Currently, the United States exports about 3.5
+                    times more plant (crop) products than animal products, leading to a higher rank for large grain- and
+                    oilseed-producing States."</p>
                 <p>Which states play the largest role in agricultural economy?</p>
-                <p>Click a state to see the breakdown of its exports' values and learn about its local agricultural economy.  </p>
+                <p>Click a state to see the breakdown of its exports' values and learn about its local agricultural
+                    economy. </p>
             </div>
             <div id="map"></div>
-            <div id="chart"></div>
         </div>
-    </div>  
-
+    </div>
 
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="js/chroma.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
     <script src="data/cropvalues_state.js"></script>
     <!-- Load d3.js and c3.js -->
-    <script src="data/agricultural_employment.js"></script> 
+    <script src="data/agricultural_employment.js"></script>
     <script src="js/scripts.js"></script>
 </body>
 
