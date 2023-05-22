@@ -29,6 +29,7 @@ nav {
     display: inline-block;
     font-size: .9rem;
 }
+
 h2 {
     color: #7E9971
 }
@@ -62,7 +63,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 2; 
+    z-index: 2;
 }
 
 
@@ -143,7 +144,7 @@ body {
     margin: 0;
 }
 
-/*buttons*/
+/*button from https://getcssscan.com/css-buttons-examples */
 .button-28 {
     appearance: none;
     background-color: transparent;

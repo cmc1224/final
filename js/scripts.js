@@ -14,9 +14,8 @@ map.scrollZoom.disable();
 
 let hoveredStateId = null;
 
+// clean the data to convert total agricultural export value (in millions) from strings to numbers
 $.getJSON('data/cropvalues_state.geojson', function (data) {
-
-    // clean the data to convert total agricultural export value (in millions) from strings to numbers
     const cleanFeatures = data.features.map(function (feature) {
         const newFeature = feature
         newFeature.properties['cropvalues_state_Total agricultural exports'] = parseFloat(feature.properties['cropvalues_state_Total agricultural exports'])
@@ -66,7 +65,7 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
                 ]
             }
         })
-
+        //color on hover
         map.addLayer({
             'id': 'line-state-highlight',
             'type': 'fill',
@@ -125,7 +124,7 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
 
         })
 
-
+        //populate sidebar with state information on click with sortable table
         map.on('click', 'fill-cropvalues-totalexports', (e) => {
 
             const state_name = e.features[0].properties['name']
@@ -298,7 +297,7 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
         }),
 
 
-            //highlight on hover
+            //change fill on hover
             map.on('mousemove', 'line-state-highlight', (e) => {
                 if (e.features.length > 0) {
                     if (hoveredStateId !== null) {
@@ -333,18 +332,16 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
                 map.on('mouseleave', 'fill-cropvalues-totalexports', () => {
                     map.getCanvas().style.cursor = '';
                 });
+
+                //show % of workforce when hovering over circle
                 map.on('mouseenter', 'ag_employment_share_state', (e) => {
-                    // Change the cursor style as a UI indicator.
                     map.getCanvas().style.cursor = 'pointer';
 
-                    // Copy coordinates array.
                     const coordinates = e.features[0].geometry.coordinates.slice();
                     const employment = e.features[0].properties['NAICS 11 share of total employment (as decimal)'];
                     const state = e.features[0].properties['State']
                     const popup = new mapboxgl.Popup()
 
-                    // Populate the popup and set its coordinates
-                    // based on the feature found.
                     popup
                         .setLngLat(coordinates, "bottom-right")
                         .setHTML(`${numeral(employment).format('0.00%')} of the workforce in ${state} works in the agricultural industry`)
