@@ -158,93 +158,143 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
             const Wheat = parseFloat(e.features[0].properties['cropvalues_state_Wheat'])
 
             $('#sidebar').html(
-                `<div>
-                <h2>
+                `                <h2>
                     ${state_name} 
                 </h2>
                 <p>${state_name} exported $${(total_exports_value_millions).toLocaleString('en-US')} 
-                worth in agricultural products in 2021. Their largest export is ${largest_export}. </p>
+                worth in agricultural products in 2021. Their largest export is ${(largest_export)}. </p>
+                <p> Sort products alphabetically or by its share of the state's total exports. </p>
                 <h3>Value of State Exports</h3>
-                <dt> <h4>Product</h4>
-                <dd> <h4>Export Value (in millions)</h4>
-                <dd> <h4>% of total</h4>
-                <dt> Beef and Veal 
-                <dd> $ ${beef_and_veal.toLocaleString('en-US')}
-                <dd> ${((beef_and_veal) / (total_exports_value) * 100).toFixed(2)}% 
-                <dt>Broiler Meat  
-                <dd>$ ${broiler_meat.toLocaleString('en-US')} 
-                <dd> ${((broiler_meat) / (total_exports_value) * 100).toFixed(2)}%
-                <dt>Corn  
-                <dd>$ ${corn.toLocaleString('en-US')}
-                <dd> ${((corn) / (total_exports_value) * 100).toFixed(2)}% 
-                <dt>Cotton 
-                <dd>$ ${cotton.toLocaleString('en-US')} 
-                <dd> ${((cotton) / (total_exports_value) * 100).toFixed(2)} %
-                <dt> Dairy 
-                <dd>$ ${dairy.toLocaleString('en-US')} 
-                <dd> ${((dairy) / (total_exports_value) * 100).toFixed(2)} %
-                <dt>Feeds and other feed grains 
-                <dd>$ ${Feeds_and_other_feed_grains.toLocaleString('en-US')} 
-                <dd> ${((Feeds_and_other_feed_grains) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Fruits, fresh
-                <dd>$ ${Fruits_fresh.toLocaleString('en-US')} 
-                <dd> ${((Fruits_fresh) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Fruits, processed
-                <dd>$ ${Fruits_processed.toLocaleString('en-US')} 
-                <dd> ${((Fruits_processed) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Grain products
-                <dd>$ ${Grain_products.toLocaleString('en-US')} 
-                <dd> ${((Grain_products) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Hides and skins
-                <dd>$ ${Hides_and_skins.toLocaleString('en-US')} 
-                <dd> ${((Hides_and_skins) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Other livestock products
-                <dd>$ ${Other_livestock_products.toLocaleString('en-US')} 
-                <dd> ${((Other_livestock_products) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Other oilseeds and products
-                <dd>$ ${Other_oilseeds_and_products.toLocaleString('en-US')} 
-                <dd> ${((Other_oilseeds_and_products) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Other plant products
-                <dd>$ ${Other_plant_products.toLocaleString('en-US')} 
-                <dd> ${((Other_plant_products) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Other poultry products
-                <dd>$ ${Other_poultry_products.toLocaleString('en-US')} 
-                <dd> ${((Other_poultry_products) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Pork
-                <dd>$ ${Pork.toLocaleString('en-US')} 
-                <dd> ${((Pork) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Rice
-                <dd>$ ${Rice.toLocaleString('en-US')} 
-                <dd> ${((Rice) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Soybean meal
-                <dd>$ ${Soybean_meal.toLocaleString('en-US')} 
-                <dd> ${((Soybean_meal) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Soybeans
-                <dd>$ ${Soybeans.toLocaleString('en-US')} 
-                <dd> ${((Soybeans) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Tobacco
-                <dd>$ ${Tobacco.toLocaleString('en-US')} 
-                <dd> ${((Tobacco) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Tree_nuts
-                <dd>$ ${Tree_nuts.toLocaleString('en-US')} 
-                <dd> ${((Tree_nuts) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Vegetable oils
-                <dd>$ ${Vegetable_oils.toLocaleString('en-US')} 
-                <dd> ${((Vegetable_oils) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Vegetables, fresh
-                <dd>$ ${Vegetables_fresh.toLocaleString('en-US')} 
-                <dd> ${((Vegetables_fresh) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Vegetables, processed
-                <dd>$ ${Vegetables_processed.toLocaleString('en-US')} 
-                <dd> ${((Vegetables_processed) / (total_exports_value) * 100).toFixed(2)} % 
-                <dt>Wheat
-                <dd>$ ${Wheat.toLocaleString('en-US')} 
-                <dd> ${((Wheat) / (total_exports_value) * 100).toFixed(2)} % 
-            </div>
-            <div>
-            <br></br>
-                <button id="resetbutton" class="button-28" role="button" onclick="location.reload()">Reset</button>
-            </div>`)
+                <table class="sortable">
+                <thead>
+                <tr>
+                    <th><h4>Product</h4></th>
+                    <th class="no-sort"><h4> Export Value (in millions)</h4></th>
+                    <th> <h4>% of total</h4></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> Beef and Veal </td>
+                        <td> $ ${beef_and_veal.toLocaleString('en-US')} </td>
+                        <td> ${((beef_and_veal) / (total_exports_value) * 100).toFixed(2)}% </td>
+                    </tr>
+                    <tr>
+                <td>Broiler Meat  </td>
+                <td>$ ${broiler_meat.toLocaleString('en-US')} </td>
+                <td> ${((broiler_meat) / (total_exports_value) * 100).toFixed(2)}%</td>
+                </tr>
+                <tr>
+                <td>Corn  </td>
+                <td>$ ${corn.toLocaleString('en-US')}</td>
+                <td> ${((corn) / (total_exports_value) * 100).toFixed(2)}% </td>
+                </tr>
+                <tr>
+                <td>Cotton </td>
+                <td>$ ${cotton.toLocaleString('en-US')} </td>
+                <td> ${((cotton) / (total_exports_value) * 100).toFixed(2)} %</td>
+                </tr>
+                <tr>
+                <td>Dairy </td>
+                <td>$ ${dairy.toLocaleString('en-US')} </td>
+                <td> ${((dairy) / (total_exports_value) * 100).toFixed(2)} %</td>
+                </tr>
+                <tr>
+                <td>Feeds and other feed grains </td>
+                <td>$ ${Feeds_and_other_feed_grains.toLocaleString('en-US')} </td>
+                <td> ${((Feeds_and_other_feed_grains) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                <tr>
+                <td>Fruits, fresh </td>
+                <td>$ ${Fruits_fresh.toLocaleString('en-US')} </td>
+                <td> ${((Fruits_fresh) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                <tr>
+                <td>Fruits, processed</td>
+                <td>$ ${Fruits_processed.toLocaleString('en-US')} </td>
+                <td> ${((Fruits_processed) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                <tr>
+                <td>Grain products</td>
+                <td>$ ${Grain_products.toLocaleString('en-US')} </td>
+                <td> ${((Grain_products) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                <tr>
+                <td>Hides and skins</td>
+                <td>$ ${Hides_and_skins.toLocaleString('en-US')} </td>
+                <td> ${((Hides_and_skins) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                <tr>
+                <td>Other livestock products</td>
+                <td>$ ${Other_livestock_products.toLocaleString('en-US')} </td>
+                <td> ${((Other_livestock_products) / (total_exports_value) * 100).toFixed(2)} %</td>
+                </tr> 
+                <tr>
+                <td>Other oilseeds and products</td>
+                <td>$ ${Other_oilseeds_and_products.toLocaleString('en-US')} </td>
+                <td> ${((Other_oilseeds_and_products) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                <tr>
+                <td>Other plant products</td>
+                <td>$ ${Other_plant_products.toLocaleString('en-US')} </td>
+                <td> ${((Other_plant_products) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                <tr>
+                <td>Other poultry products</td>
+                <td>$ ${Other_poultry_products.toLocaleString('en-US')} </td>
+                <td> ${((Other_poultry_products) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                <tr>
+                <td>Pork</td>
+                <td>$ ${Pork.toLocaleString('en-US')} </td>
+                <td> ${((Pork) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                <tr>
+                <td>Rice</td>
+                <td>$ ${Rice.toLocaleString('en-US')} </td>
+                <td> ${((Rice) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                <tr>
+                <td>Soybean meal</td>
+                <td>$ ${Soybean_meal.toLocaleString('en-US')} </td>
+                <td> ${((Soybean_meal) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                <tr>
+                <td>Soybeans</td>
+                <td>$ ${Soybeans.toLocaleString('en-US')} </td>
+                <td> ${((Soybeans) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                <tr>
+                <td>Tobacco
+                <td>$ ${Tobacco.toLocaleString('en-US')} 
+                <td> ${((Tobacco) / (total_exports_value) * 100).toFixed(2)} % 
+                </tr>
+                <tr>
+                <td>Tree nuts</td>
+                <td>$ ${Tree_nuts.toLocaleString('en-US')} </td>
+                <td> ${((Tree_nuts) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                <tr>
+                <td>Vegetable oils</td>
+                <td>$ ${Vegetable_oils.toLocaleString('en-US')} </td>
+                <td> ${((Vegetable_oils) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                <tr>
+                <td>Vegetables, fresh</td>
+                <td>$ ${Vegetables_fresh.toLocaleString('en-US')} </td>
+                <td> ${((Vegetables_fresh) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                <tr>
+                <td>Vegetables, processed</td>
+                <td>$ ${Vegetables_processed.toLocaleString('en-US')} </td>
+                <td> ${((Vegetables_processed) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                <tr>
+                <td>Wheat</td>
+                <td>$ ${Wheat.toLocaleString('en-US')} </td>
+                <td> ${((Wheat) / (total_exports_value) * 100).toFixed(2)} % </td>
+                </tr>
+                </tbody>`)
         }),
 
 

@@ -5,9 +5,11 @@
     <meta charset="utf-8">
     <title>2021 Agricultural Economy by State</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="css/sortable.min.css" />
+    <link rel="stylesheet" href="css/sortable.css.map" />
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
-    <!-- Load c3.css -->
     <link href="css/styles.css" rel="stylesheet">
+
 
 
 </head>
@@ -77,6 +79,9 @@
                     <div><span style="width: 40px; height: 40px; background-color:#C6C3BA"></span>0.8%</div>
                     <div><span style="width: 50px; height: 50px; background-color:#C6C3BA"></span>1%</div>
                 </dd>
+                <div>
+                    <button id="resetbutton" class="button-28" role="button" onclick="location.reload()">Reset</button>
+                </div>
             </div>
         </div>
     </div>
@@ -85,6 +90,7 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+<script src="js/sortable.min.js"></script>
     <script src="data/cropvalues_state.js"></script>
     <script src="data/agricultural_employment.js"></script>
     <script src="js/scripts.js"></script>
