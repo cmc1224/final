@@ -243,10 +243,9 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
             </div>
             <div>
             <br></br>
-                <button id="resetbutton" class="button-28" role="button" onclick="myFunction()">Reset</button>
+                <button id="resetbutton" class="button-28" role="button" onclick="location.reload()">Reset</button>
             </div>`)
         }),
-
 
 
             //highlight on hover
@@ -297,47 +296,38 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
                     // Populate the popup and set its coordinates
                     // based on the feature found.
                     popup
-                        .setLngLat(coordinates)
-                        .setHTML(`${numeral(employment).format ('0.00%')} of the workforce in ${state} works in the agricultural industry`)
+                        .setLngLat(coordinates, "bottom-right")
+                        .setHTML(`${numeral(employment).format('0.00%')} of the workforce in ${state} works in the agricultural industry`)
                         .addTo(map);
 
                     map.on('mouseleave', 'ag_employment_share_state', () => {
                         map.getCanvas().style.cursor = '';
                         popup.remove();
-                    })
-
-                    //button actions
-
-                    $('#fly-to-alaska').on('click', function () {
-                        map.flyTo({
-                            center: [-151.30148325488983, 65.48942304758057],
-                            zoom: 3,
-                        })
-                    }),
-
-                        $('#fly-to-hawaii').on('click', function () {
-                            map.flyTo({
-                                center: [-156.7600002487613, 20.951584107540913],
-                                zoom: 3,
-                            })
-                        }),
-
-
-                        $('#fly-to-continentalUS').on('click', function () {
-                            map.flyTo({
-                                center: [-92.19968288822557, 34.89277754376434],
-                                zoom: 3,
-                            })
-                        }),
-
-                        $('#reset').on('click', function () {
-                            map.flyTo({
-                                center: [-92.19968288822557, 34.89277754376434],
-                                zoom: 3,
-                            })
-                        })
-
+                    });
                 });
             });
     })
+    //button actions
+
+    $('#fly-to-alaska').on('click', function () {
+        map.flyTo({
+            center: [-151.30148325488983, 65.48942304758057],
+            zoom: 3,
+        })
+    }),
+
+        $('#fly-to-hawaii').on('click', function () {
+            map.flyTo({
+                center: [-156.7600002487613, 20.951584107540913],
+                zoom: 3,
+            })
+        }),
+
+
+        $('#fly-to-continentalUS').on('click', function () {
+            map.flyTo({
+                center: [-92.19968288822557, 34.89277754376434],
+                zoom: 3,
+            })
+        })
 })
