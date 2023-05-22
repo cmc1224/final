@@ -14,6 +14,14 @@
 
 <body>
     <div id="main-container">
+        <nav>
+            <div class="title">2021 Agricultural Economy by State</div>
+            <div class="nav-links">
+                <a class="nav-link" href="https://github.com/cmc1224/final" target="_blank"
+                    rel="noopener noreferrer">Github</a>
+            </div>
+
+        </nav>
         <div id="content-container">
             <div id="sidebar">
                 <p>The United stated produced $171.7 billion in agricultural exports in 2021. </p>
@@ -41,20 +49,48 @@
                 <p>Which states play the largest role in agricultural economy?</p>
                 <p>Click a state to see the breakdown of its exports' values and learn about its local agricultural
                     economy. </p>
+                <button id="fly-to-alaska" class="button-28" role="button">Fly to Alaska</button>
+                <button id="fly-to-hawaii" class="button-28" role="button">Fly to Hawaii</button>
+                <button id="fly-to-continentalUS" class="button-28" role="button">Fly to the Continental US</button>
             </div>
             <div id="map"></div>
+            <div id="map.legend" class="legend">
+
+                <dt>
+                    <h4>Value of Exports</h4>
+                </dt>
+                <dd>
+                    <div><span style="background-color: #344E41"></span>$10 Billion</div>
+                    <div><span style="background-color: #3A5A40"></span>$5 Billion</div>
+                    <div><span style="background-color: #588157"></span>$2.5 Billion</div>
+                    <div><span style="background-color: #7E9971"></span>$1 Billion</div>
+                    <div><span style="background-color: #A3B18A"></span>$500 Million</div>
+                    <div><span style="background-color: #DAD7CD"></span>$100 Million</div>
+                </dd>
+
+                <dt>
+                    <h4>% of Workforce in Agricultural Industries</h4>
+                </dt>
+                <dd>
+                    <div><span style="width: 1px; height: 1px; background-color:#C6C3BA"></span> 0% </div>
+                    <div><span style="width: 10px; height: 10px; background-color:#C6C3BA"></span>0.2%</div>
+                    <div><span style="width: 20px; height: 20px; background-color:#C6C3BA"></span>0.4%</div>
+                    <div><span style=" width: 30px; height: 30px; background-color:#C6C3BA"></span>0.6%</div>
+                    <div><span style="width: 40px; height: 40px; background-color:#C6C3BA"></span>0.8%</div>
+                    <div><span style="width: 50px; height: 50px; background-color:#C6C3BA"></span>1%</div>
+                </dd>
+            </div>
         </div>
     </div>
 
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-    <script src="js/chroma.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
     <script src="data/cropvalues_state.js"></script>
-    <!-- Load d3.js and c3.js -->
     <script src="data/agricultural_employment.js"></script>
     <script src="js/scripts.js"></script>
+
 </body>
 
 </html>

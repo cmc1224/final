@@ -5,10 +5,9 @@ const map = new mapboxgl.Map({
     container: 'map', // container ID
     // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
     style: 'mapbox://styles/cmc1224/clhp8sej9002601p8379dhiy8', // style URL
-    center: [ -94.19968288822557, 34.89277754376434], // starting position [lng, lat]
+    center: [-89.43683345193182, 38.25167175363515], // starting position [lng, lat]
     zoom: 3, // starting zoom
     pitch: 0,
-    dragPan: false,
 });
 
 map.scrollZoom.disable();
@@ -80,9 +79,9 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
                     ['boolean', ['feature-state', 'hover'], false],
                     1,
                     0
-                ],
+                ]
             }
-        });
+        })
 
         // states border
         map.addLayer({
@@ -125,7 +124,10 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
             }
 
         })
+
+
         map.on('click', 'fill-cropvalues-totalexports', (e) => {
+
             const state_name = e.features[0].properties['name']
             const total_exports_value_millions = parseFloat(e.features[0].properties['cropvalues_state_Total agricultural exports'] * 1000000)
             const total_exports_value = (e.features[0].properties['cropvalues_state_Total agricultural exports'])
@@ -155,9 +157,8 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
             const Vegetables_processed = parseFloat(e.features[0].properties['cropvalues_state_Vegetables, processed'])
             const Wheat = parseFloat(e.features[0].properties['cropvalues_state_Wheat'])
 
-
-            $('#sidebar').html(`
-            <div>
+            $('#sidebar').html(
+                `<div>
                 <h2>
                     ${state_name} 
                 </h2>
@@ -240,77 +241,103 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
                 <dd>$ ${Wheat.toLocaleString('en-US')} 
                 <dd> ${((Wheat) / (total_exports_value) * 100).toFixed(2)} % 
             </div>
-            `)
+            <div>
+            <br></br>
+                <button id="resetbutton" class="button-28" role="button" onclick="myFunction()">Reset</button>
+            </div>`)
+        }),
 
-            new mapboxgl.Popup()
-                .setLngLat([e.features[0].properties.centlon, e.features[0].properties.centlat])
-                .setHTML(
-                    `<h3>${state_name} </h3>
-                    <p><b>Total exports value: </b> $ ${numeral(total_exports_value_millions).format('0.00a')} </p>
-                     <p><b>Most valuable export:</b> ${largest_export}</p>
-                     <p><b>Agricultral industry's share of employment:</b> </p> `
-                )
-                .addTo(map);
-        });
-    });
-    //highlight on hover
-    map.on('mousemove', 'line-state-highlight', (e) => {
-        if (e.features.length > 0) {
-            if (hoveredStateId !== null) {
-                map.setFeatureState(
-                    { source: 'cropvalues_state', id: hoveredStateId },
-                    { hover: false }
-                );
-            }
-            hoveredStateId = e.features[0].id;
-            map.setFeatureState(
-                { source: 'cropvalues_state', id: hoveredStateId },
-                { hover: true }
-            );
-        }
-    });
 
-    // When the mouse leaves the state-fill layer, update the feature state of the
-    // previously hovered feature.
-    map.on('mouseleave', 'line-state-highlight', () => {
-        if (hoveredStateId !== null) {
-            map.setFeatureState(
-                { source: 'cropvalues_state', id: hoveredStateId },
-                { hover: false }
-            );
-        }
-        hoveredStateId = null;
-    });
-    map.on('mouseenter', 'fill-cropvalues-totalexports', () => {
-        map.getCanvas().style.cursor = 'pointer';
-    });
 
-    // Change it back to a pointer when it leaves.
-    map.on('mouseleave', 'fill-cropvalues-totalexports', () => {
-        map.getCanvas().style.cursor = '';
-    });
+            //highlight on hover
+            map.on('mousemove', 'line-state-highlight', (e) => {
+                if (e.features.length > 0) {
+                    if (hoveredStateId !== null) {
+                        map.setFeatureState(
+                            { source: 'cropvalues_state', id: hoveredStateId },
+                            { hover: false }
+                        );
+                    }
+                    hoveredStateId = e.features[0].id;
+                    map.setFeatureState(
+                        { source: 'cropvalues_state', id: hoveredStateId },
+                        { hover: true }
+                    );
+                }
 
-    var limits = chroma.limits(cleanFeatures, 'q', 4);
+                // When the mouse leaves the state-fill layer, update the feature state of the
+                // previously hovered feature.
+                map.on('mouseleave', 'line-state-highlight', () => {
+                    if (hoveredStateId !== null) {
+                        map.setFeatureState(
+                            { source: 'cropvalues_state', id: hoveredStateId },
+                            { hover: false }
+                        );
+                    }
+                    hoveredStateId = null;
+                });
+                map.on('mouseenter', 'fill-cropvalues-totalexports', () => {
+                    map.getCanvas().style.cursor = 'pointer';
+                });
 
-    //chroma color scale
-    var colorScale = chroma.scale(['#DAD7CD', '#344E41']).mode('lch').colors(5);
-    console.log(limits);
+                // Change it back to a pointer when it leaves.
+                map.on('mouseleave', 'fill-cropvalues-totalexports', () => {
+                    map.getCanvas().style.cursor = '';
+                });
+                map.on('mouseenter', 'ag_employment_share_state', (e) => {
+                    // Change the cursor style as a UI indicator.
+                    map.getCanvas().style.cursor = 'pointer';
 
-    console.log(colorScale);
+                    // Copy coordinates array.
+                    const coordinates = e.features[0].geometry.coordinates.slice();
+                    const employment = e.features[0].properties['NAICS 11 share of total employment (as decimal)'];
+                    const state = e.features[0].properties['State']
+                    const popup = new mapboxgl.Popup()
 
-    var div = document.createElement('DIV');
-    div.className = 'map-overlay';
-    /* Add min & max*/
-    var labels = []
-    div.innerHTML = '<div><h3>Value of Exports</h3><br> \
-      </div><div class="labels"><div class="min">$0</div> \
-      <div class="max">$10 Billion</div></div>'
+                    // Populate the popup and set its coordinates
+                    // based on the feature found.
+                    popup
+                        .setLngLat(coordinates)
+                        .setHTML(`${numeral(employment).format ('0.00%')} of the workforce in ${state} works in the agricultural industry`)
+                        .addTo(map);
 
-    for (i = 0; i < colorScale.length; i++) {
-        labels.push('<li style="background-color: ' + colorScale[i] + '"></li>')
-    }
+                    map.on('mouseleave', 'ag_employment_share_state', () => {
+                        map.getCanvas().style.cursor = '';
+                        popup.remove();
+                    })
 
-    div.innerHTML += '<ul style="list-style-type:none;display:flex">' + labels.join('') + '</ul>'
-    document.getElementById('map').appendChild(div);
-}
-);
+                    //button actions
+
+                    $('#fly-to-alaska').on('click', function () {
+                        map.flyTo({
+                            center: [-151.30148325488983, 65.48942304758057],
+                            zoom: 3,
+                        })
+                    }),
+
+                        $('#fly-to-hawaii').on('click', function () {
+                            map.flyTo({
+                                center: [-156.7600002487613, 20.951584107540913],
+                                zoom: 3,
+                            })
+                        }),
+
+
+                        $('#fly-to-continentalUS').on('click', function () {
+                            map.flyTo({
+                                center: [-92.19968288822557, 34.89277754376434],
+                                zoom: 3,
+                            })
+                        }),
+
+                        $('#reset').on('click', function () {
+                            map.flyTo({
+                                center: [-92.19968288822557, 34.89277754376434],
+                                zoom: 3,
+                            })
+                        })
+
+                });
+            });
+    })
+})
