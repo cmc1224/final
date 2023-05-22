@@ -326,7 +326,7 @@ $.getJSON('data/cropvalues_state.geojson', function (data) {
 
         $('#fly-to-continentalUS').on('click', function () {
             map.flyTo({
-                center: [-92.19968288822557, 34.89277754376434],
+                center: [-89.43683345193182, 38.25167175363515],
                 zoom: 3,
             })
         })
